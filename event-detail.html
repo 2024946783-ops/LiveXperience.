@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery – LiveXperience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="C:\Users\muhdi\Downloads\photo_6204025640432899356_y.jpg">
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.06);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); line-height: 1.7; padding-top: 100px; }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.6s ease; }
+    .loader-spinner { width: 70px; height: 70px; border: 5px solid rgba(255,255,255,0.05); border-top: 5px solid var(--accent); border-radius: 50%; animation: spin 1.2s linear infinite; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 16px 0; background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 999; display: flex; }
+    .navbar .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    
+    .search-redirect-container { display: flex; align-items: center; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.1); border-radius: 30px; padding: 4px 14px; }
+    .search-redirect-input { background: transparent; border: none; color: #fff; font-size: 0.85rem; outline: none; width: 160px; }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+    .gallery-img { width: 100%; height: 260px; object-fit: cover; border-radius: var(--border-radius); transition: transform 0.4s ease; border: 1px solid rgba(255,255,255,0.1); }
+    .gallery-img:hover { transform: scale(1.04); }
+  </style>
+</head>
+<body>
+
+  <div id="loading-screen"><div class="loader-spinner"></div></div>
+
+  <nav class="navbar">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+      <a href="index.html" class="logo">LiveXperience</a>
+      <ul class="nav-links" style="display:flex; gap:32px; list-style:none;">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="portfolio.html">Events</a></li>
+        <li><a href="gallery.html" class="active" style="color:#fff; font-weight:700;">Gallery</a></li>
+        <li><a href="news..html">News</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="search-redirect-container">
+        <input type="text" id="navSearchInput" class="search-redirect-input" placeholder="Search page..." list="sitePages">
+        <button id="navSearchBtn" style="background:transparent; border:none; color:#b0b0b0;">🔍</button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container" style="padding: 60px 24px;">
+    <h2 style="text-align:center; font-size: 2.5rem;">Vivid Crowd & Event Memories</h2>
+    <div class="grid-3">
+      <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=300&fit=crop" class="gallery-img" alt="Stadium Laser Show">
+      <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&h=300&fit=crop" class="gallery-img" alt="Crowd Cheering Concert">
+      <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=300&fit=crop" class="gallery-img" alt="DJ Deck Lighting">
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() { document.getElementById('loading-screen').style.opacity = '0'; setTimeout(function(){ document.getElementById('loading-screen').style.display='none'; },600); }, 4500);
+      
+      var searchPagesMap = { 'home':'index.html','about us':'about.html','services':'service.html','events':'portfolio.html','gallery':'gallery.html','news':'news..html','contact':'contact.html' };
+      document.getElementById('navSearchBtn').addEventListener('click', function() {
+        var q = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if(searchPagesMap[q]) window.location.href = searchPagesMap[q];
+      });
+    });
+  </script>
+</body>
+</html>

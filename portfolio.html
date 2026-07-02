@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Concert Events Hub | LiveXperience</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="C:\Users\muhdi\Downloads\photo_6204025640432899356_y.jpg">
+
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.06);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Loading Component Screen */
+    #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
+    .spinner { border: 4px solid rgba(255, 255, 255, 0.1); width: 60px; height: 60px; border-radius: 50%; border-left-color: var(--accent); animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Navigational Bar */
+    nav { background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; height: 70px; display: flex; align-items: center; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+    .hamburger span { width: 25px; height: 2px; background: #fff; }
+
+    /* Control Matrix Configuration Filter Bar */
+    .filter-bar { background: var(--secondary); padding: 20px; border-radius: var(--border-radius); border: 1px solid rgba(255,255,255,0.05); margin-bottom: 40px; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: space-between; }
+    .filter-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .form-control { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); color: #fff; padding: 10px 16px; border-radius: 24px; outline: none; font-size: 0.9rem; transition: var(--transition); }
+    .form-control:focus { border-color: var(--accent); }
+    
+    /* Concert Layout Cards Display Grid Elements */
+    .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 30px; }
+    .event-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--border-radius); padding: 24px; display: flex; flex-direction: column; justify-content: space-between; transition: var(--transition); }
+    .event-card:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); box-shadow: 0 12px 24px rgba(0,0,0,0.3); }
+    
+    /* Custom List Markers styling alignment rules */
+    .custom-bullet-list { list-style: none; padding: 0; margin: 16px 0; }
+    .custom-bullet-list li { position: relative; padding-left: 24px; margin-bottom: 8px; color: var(--text-secondary); font-size: 0.9rem; }
+    .custom-bullet-list li::before { content: "⚡"; position: absolute; left: 0; top: 0; color: var(--accent-secondary); font-size: 0.95rem; }
+
+    .btn { background: var(--accent); color: white; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 600; text-decoration: none; transition: var(--transition); font-size: 0.9rem; display: inline-block; text-align: center; }
+    .btn:hover { background: var(--accent-secondary); }
+
+    .search-wrapper { position: relative; display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; }
+    .search-wrapper input { background: transparent; border: none; color: #fff; outline: none; font-size: 0.85rem; }
+
+    footer { background: var(--secondary); padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+    footer p { text-align: center; font-size: 0.85rem; color: var(--text-secondary); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: var(--secondary); flex-direction: column; padding: 24px; }
+      .nav-links.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <p style="color:var(--text-secondary); margin-top:20px; font-size:0.9rem; letter-spacing:2px;">LOADING PORTFOLIO RUNTIME...</p>
+  </div>
+
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Live<span>Xperience</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Team</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="portfolio.html" class="active">Concert Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="news..html">News Hub</a></li>
+        <li><a href="contact.html">Contact Core</a></li>
+        <li>
+          <div class="search-wrapper">
+            <input type="text" id="navSearchInput" placeholder="Search page..." list="sitePages">
+            <button id="navSearchBtn" style="background:transparent; border:none; color:#b0b0b0; cursor:pointer;">🔍</button>
+          </div>
+        </li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <datalist id="sitePages">
+    <option value="home"></option>
+    <option value="about us"></option>
+    <option value="services"></option>
+    <option value="events"></option>
+    <option value="gallery"></option>
+    <option value="news"></option>
+    <option value="contact"></option>
+  </datalist>
+
+  <main class="container" style="padding: 60px 24px;">
+    <h2 style="font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 10px;">Concert Event Portfolio</h2>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px;">Select from active upcoming arena schedules. Direct ticketing transaction channels available.</p>
+
+    <div class="filter-bar">
+      <input type="text" id="localSearch" class="form-control" style="min-width: 260px;" placeholder="Filter by keyword description...">
+      <div class="filter-group">
+        <select id="categoryFilter" class="form-control">
+          <option value="all">All Genres</option>
+          <option value="electronic">Electronic Array</option>
+          <option value="pop">Pop Orchestrations</option>
+          <option value="rock">Rock Heavy Metal</option>
+        </select>
+        <select id="sortFilter" class="form-control">
+          <option value="default">Sort Matrix Index</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="eventGrid" class="portfolio-grid">
+      
+      <div class="event-card" data-name="vivid matrix live stadium experience" data-category="electronic" data-price="350">
+        <div>
+          <span style="color: var(--accent-secondary); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Live Arena – Stadium Core</span>
+          <h3 style="font-size: 1.4rem; margin: 8px 0 12px 0;">Vivid Neon Matrix Live</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">Experience next-gen synchronized active array lighting configurations alongside deep sub-bass acoustic monitoring fields.</p>
+          
+          <ul class="custom-bullet-list">
+            <li>Fully interactive immersive wristband tracking nodes framework.</li>
+            <li>Multi-angle panoramic audio wave tracking matrix deployment.</li>
+            <li>Premium general floor zone access entry assignment allocation.</li>
+          </ul>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+          <div>
+            <span style="display:block; font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase;">Pass Price Matrix</span>
+            <span style="font-size:1.3rem; font-weight:700; color:#fff;">RM 350</span>
+          </div>
+          <a href="purchase.html" class="btn">Purchase Ticket</a>
+        </div>
+      </div>
+
+      <div class="event-card" data-name="symphonic wave digital tracking array" data-category="pop" data-price="250">
+        <div>
+          <span style="color: var(--accent); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Indoor Arena – Level 2 Theater</span>
+          <h3 style="font-size: 1.4rem; margin: 8px 0 12px 0;">Symphonic Wave Digital</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">A crisp high-fidelity acoustic presentation mapping detailed orchestral textures via network digital routing channels.</p>
+          
+          <ul class="custom-bullet-list">
+            <li>Optimized sound concourse engineering tuning index.</li>
+            <li>Reserved lower tier seating alignment coordination parameters.</li>
+            <li>Lossless digital audio synchronization streaming capture layer.</li>
+          </ul>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+          <div>
+            <span style="display:block; font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase;">Pass Price Matrix</span>
+            <span style="font-size:1.3rem; font-weight:700; color:#fff;">RM 250</span>
+          </div>
+          <a href="purchase.html" class="btn">Purchase Ticket</a>
+        </div>
+      </div>
+
+      <div class="event-card" data-name="hypersonic overdrive arena metal load" data-category="rock" data-price="420">
+        <div>
+          <span style="color: var(--accent-secondary); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Colosseum Dome – Elite Stage</span>
+          <h3 style="font-size: 1.4rem; margin: 8px 0 12px 0;">Hypersonic Overdrive Metal</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;">Heavy distortion simulation engineering meeting complex hardware rigging structures designed for high sound pressures.</p>
+          
+          <ul class="custom-bullet-list">
+            <li>Reinforced heavy array structure weight tolerance limits.</li>
+            <li>Ultimate VIP front-stage mosh containment grid pass token.</li>
+            <li>Exclusive physical token distribution package included.</li>
+          </ul>
+        </div>
+        <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 16px; display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+          <div>
+            <span style="display:block; font-size:0.75rem; color:var(--text-secondary); text-transform:uppercase;">Pass Price Matrix</span>
+            <span style="font-size:1.3rem; font-weight:700; color:#fff;">RM 420</span>
+          </div>
+          <a href="purchase.html" class="btn">Purchase Ticket</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 LiveXperience Engineering Core. Designed for academic review parameters. All rights reserved.</p>
+    </div>
+    <p>Live Date: <span id="globalLiveDate">Loading...</span></p>
+<p>Live Time: <span id="globalLiveClock">Loading...</span></p>
+<script src="clock.js"></script>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Clear Loading Screens Sequence
+      setTimeout(function() {
+        const screen = document.getElementById('loading-screen');
+        if(screen) { screen.style.opacity = '0'; setTimeout(function(){ screen.style.display='none'; },600); }
+      }, 1000);
+
+      function runGridFiltering() {
+        var query = document.getElementById('localSearch').value.toLowerCase().trim();
+        var categoryFilter = document.getElementById('categoryFilter').value;
+        var sortFilter = document.getElementById('sortFilter').value;
+        var cards = Array.from(document.querySelectorAll('#eventGrid .event-card'));
+        
+        var matchingCards = [];
+
+        cards.forEach(function(card) {
+          var attributes = card.getAttribute('data-name');
+          var cat = card.getAttribute('data-category');
+          
+          var matchesSearch = attributes.includes(query) || query === '';
+          var matchesCategory = categoryFilter === 'all' || cat === categoryFilter;
+
+          if(matchesSearch && matchesCategory) {
+            card.style.display = 'flex';
+            matchingCards.push(card);
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        if(sortFilter === 'price-low') {
+          matchingCards.sort((a, b) => parseInt(a.getAttribute('data-price')) - parseInt(b.getAttribute('data-price')));
+        } else if (sortFilter === 'price-high') {
+          matchingCards.sort((a, b) => parseInt(b.getAttribute('data-price')) - parseInt(a.getAttribute('data-price')));
+        }
+
+        var layoutGrid = document.getElementById('eventGrid');
+        matchingCards.forEach(card => layoutGrid.appendChild(card));
+      }
+
+      document.getElementById('localSearch').addEventListener('input', runGridFiltering);
+      document.getElementById('categoryFilter').addEventListener('change', runGridFiltering);
+      document.getElementById('sortFilter').addEventListener('change', runGridFiltering);
+
+      // Search Bar System Global Redirect
+      var searchPagesMap = { 'home':'index.html','about us':'about.html','services':'service.html','events':'portfolio.html','gallery':'gallery.html','news':'news..html','contact':'contact.html' };
+      document.getElementById('navSearchBtn').addEventListener('click', function() {
+        var q = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if(searchPagesMap[q]) window.location.href = searchPagesMap[q];
+      });
+
+      var hamburger = document.querySelector('.hamburger');
+      var navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+      }
+    });
+  </script>
+</body>
+</html>

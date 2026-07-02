@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us – System Communication Core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.04);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Loading Interface Component */
+    #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
+    .spinner { border: 4px solid rgba(255, 255, 255, 0.1); width: 60px; height: 60px; border-radius: 50%; border-left-color: var(--accent); animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Navigational Header Bar */
+    nav { background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; height: 70px; display: flex; align-items: center; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+    .hamburger span { width: 25px; height: 2px; background: #fff; }
+
+    /* Search Bar Design System */
+    .search-wrapper { position: relative; display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; }
+    .search-wrapper input { background: transparent; border: none; color: #fff; outline: none; font-size: 0.85rem; }
+
+    /* Communication Grid Blocks */
+    .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 40px; align-items: start; }
+    .directory-column { display: flex; flex-direction: column; gap: 20px; }
+    .contact-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); padding: 24px; border-radius: var(--border-radius); transition: var(--transition); }
+    .contact-card:hover { border-color: rgba(255,255,255,0.12); }
+    .contact-card h3 { font-size: 1.15rem; margin-bottom: 6px; color: #fff; }
+    .contact-card p { font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 4px; }
+    .contact-card a { color: var(--accent-secondary); text-decoration: none; }
+
+    /* Upload Payload Framework Form Elements */
+    .form-wrapper { background: var(--secondary); border: 1px solid rgba(255,255,255,0.05); padding: 32px; border-radius: var(--border-radius); }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+    .form-control { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; padding: 12px 16px; color: #fff; font-family: var(--font-body); outline: none; transition: var(--transition); }
+    .form-control:focus { border-color: var(--accent); background: rgba(255,255,255,0.05); }
+    
+    ul { margin-left: 20px; color: var(--text-secondary); line-height: 1.8; }
+    ul li { margin-bottom: 8px; font-size: 0.95rem; }
+
+    .btn { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 600; text-decoration: none; transition: var(--transition); display: inline-block; cursor: pointer; text-align: center; }
+    .btn:hover { background: var(--accent-secondary); }
+
+    footer { background: var(--secondary); padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+    footer p { text-align: center; font-size: 0.85rem; color: var(--text-secondary); }
+
+    @media (max-width: 900px) {
+      .contact-layout { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <p style="color:var(--text-secondary); margin-top:20px; font-size:0.9rem; letter-spacing:2px;">LINKING COMMUNICATION CHANNELS...</p>
+  </div>
+
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Live<span>Xperience</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Team</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="portfolio.html">Concert Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="news..html">News Hub</a></li>
+        <li><a href="contact.html" class="active">Contact Core</a></li>
+        <li>
+          <div class="search-wrapper">
+            <input type="text" id="navSearchInput" placeholder="Search page..." list="sitePages">
+            <button id="navSearchBtn" style="background:transparent; border:none; color:#b0b0b0; cursor:pointer;">🔍</button>
+          </div>
+        </li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <datalist id="sitePages">
+    <option value="home"></option>
+    <option value="about us"></option>
+    <option value="services"></option>
+    <option value="events"></option>
+    <option value="gallery"></option>
+    <option value="news"></option>
+    <option value="contact"></option>
+  </datalist>
+
+  <main class="container" style="padding: 60px 24px;">
+    <h2 style="font-size: 2.5rem; text-align: center; margin-bottom: 10px; font-weight: 800;">Corporate Communication Node</h2>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px;">Establish structural contact routing vectors to reach our management matrix.</p>
+
+    <div class="contact-layout">
+      
+      <div class="directory-column">
+        
+        <div style="background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); padding: 24px; border-radius: var(--border-radius);">
+          <h3 style="font-size: 1.25rem; margin-bottom: 15px; color: var(--accent);">Operational Guidelines</h3>
+          
+          <ul>
+            <li>Active Transmission Window: 09:00 - 18:00 MYT (Monday - Friday).</li>
+            <li>Average Telemetry Validation Pipeline Speed: Within 120 Minutes.</li>
+            <li>Escalations are directly processed according to standard Group 4 responsibility constraints.</li>
+          </ul>
+
+          <div style="border-top: 1px solid rgba(255,255,255,0.1); margin-top: 20px; padding-top: 15px;">
+            <h4 style="font-size: 0.95rem; margin-bottom: 6px;">Already finalized an entrance transaction pass?</h4>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px;">Jump directly over to review active profile data parameters inside our localized server configuration module.</p>
+            <a href="useracc.html" style="color: var(--accent-secondary); font-weight: 600; text-decoration: none; font-size: 0.9rem;">View Local User Profile Accounts Portal &rarr;</a>
+          </div>
+        </div>
+
+        <div class="contact-card">
+          <h3>Haziq Farhan</h3>
+          <p>Role: Deputy Chairman of LiveXperience</p>
+          <p>Phone: 011-3932 4734</p>
+          <p>Email: <a href="mailto:haziqfarhan@gmail.com">haziqfarhan@gmail.com</a></p>
+        </div>
+        <div class="contact-card">
+          <h3>Edzry Haziq</h3>
+          <p>Role: Chief Director of LiveXperience</p>
+          <p>Phone: 011-2365 4104</p>
+          <p>Email: <a href="mailto:edzryziq@yahoo.com">edzryziq@yahoo.com</a></p>
+        </div>
+        <div class="contact-card">
+          <h3>Intan Suraya</h3>
+          <p>Role: Biggest Investor of LiveXperience</p>
+          <p>Phone: 018-274 8921</p>
+          <p>Email: <a href="mailto:intansuraya@yahoo.com">intansuraya@yahoo.com</a></p>
+        </div>
+      </div>
+
+      <div class="form-wrapper">
+        <h2 style="margin-bottom: 20px; font-size: 1.5rem; font-weight: 700;">Secure Portal Upload</h2>
+        <form action="#" method="POST" onsubmit="alert('Telemetry Sync Dispatched!'); return false;">
+          <div class="form-group">
+            <label>Full User Name</label>
+            <input type="text" class="form-control" required placeholder="Jane Doe">
+          </div>
+          <div class="form-group">
+            <label>Communication Target</label>
+            <input type="email" class="form-control" required placeholder="jane@domain.com">
+          </div>
+          <div class="form-group">
+            <label>Transmission Payload Description</label>
+            <textarea class="form-control" rows="5" required placeholder="Enter query payload parameters..."></textarea>
+          </div>
+          <button type="submit" class="btn" style="width: 100%;">Dispatch Query Token</button>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container" style="text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+      &copy; 2026 LiveXperience Hub System Infrastructure. All interfaces operational.
+    </div>
+    <p>Live Date: <span id="globalLiveDate">Loading...</span></p>
+<p>Live Time: <span id="globalLiveClock">Loading...</span></p>
+<script src="clock.js"></script>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Clear Loading overlay screen module logic
+      setTimeout(function() {
+        const screen = document.getElementById('loading-screen');
+        if(screen) { screen.style.opacity = '0'; setTimeout(function(){ screen.style.display='none'; },600); }
+      }, 1000);
+
+      // System search bars routing redirect handler
+      var searchPagesMap = { 'home':'index.html','about us':'about.html','services':'service.html','events':'portfolio.html','gallery':'gallery.html','news':'news..html','contact':'contact.html' };
+      document.getElementById('navSearchBtn').addEventListener('click', function() {
+        var q = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if(searchPagesMap[q]) window.location.href = searchPagesMap[q];
+      });
+
+      var hamburger = document.querySelector('.hamburger');
+      var navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+      }
+    });
+  </script>
+</body>
+</html>

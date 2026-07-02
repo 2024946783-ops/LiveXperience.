@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LiveXperience – Services</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="C:\Users\muhdi\Downloads\photo_6204025640432899356_y.jpg">
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.06);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    
+    /* Loading Screen Elements */
+    #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
+    .spinner { border: 4px solid rgba(255, 255, 255, 0.1); width: 60px; height: 60px; border-radius: 50%; border-left-color: var(--accent); animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Navigation Header */
+    nav { background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; height: 70px; display: flex; align-items: center; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+    .hamburger span { width: 25px; height: 2px; background: #fff; transition: var(--transition); }
+
+    /* Search Bar Input */
+    .search-wrapper { position: relative; display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; }
+    .search-wrapper input { background: transparent; border: none; color: #fff; outline: none; font-size: 0.85rem; padding-right: 8px; }
+
+    /* Content Cards Grid */
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; margin-top: 40px; }
+    .card { background: var(--bg-card); padding: 32px; border-radius: var(--border-radius); border: 1px solid rgba(255,255,255,0.05); transition: var(--transition); }
+    .card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); box-shadow: 0 12px 30px rgba(0,0,0,0.4); }
+    
+    /* Table & Link Styling */
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; background: var(--bg-card); border-radius: var(--border-radius); overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    th, td { padding: 16px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    th { background: rgba(255,255,255,0.04); font-weight: 600; color: #fff; }
+    tr:last-child td { border-bottom: none; }
+    ol { margin-left: 24px; color: var(--text-secondary); }
+    ol li { margin-bottom: 12px; line-height: 1.6; }
+    .btn { background: var(--accent); color: white; border: none; padding: 12px 24px; border-radius: 30px; font-weight: 600; text-decoration: none; transition: var(--transition); display: inline-block; cursor: pointer; }
+    .btn:hover { background: var(--accent-secondary); transform: scale(1.02); }
+
+    footer { background: var(--secondary); padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+    footer p { text-align: center; font-size: 0.85rem; color: var(--text-secondary); }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: var(--secondary); flex-direction: column; padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+      .nav-links.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <p style="color:var(--text-secondary); margin-top:20px; font-size:0.9rem; letter-spacing:2px;">INITIALIZING CORE SERVICES...</p>
+  </div>
+
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Live<span>Xperience</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Team</a></li>
+        <li><a href="service.html" class="active">Services</a></li>
+        <li><a href="portfolio.html">Concert Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="news..html">News Hub</a></li>
+        <li><a href="contact.html">Contact Core</a></li>
+        <li>
+          <div class="search-wrapper">
+            <input type="text" id="navSearchInput" placeholder="Search page..." list="sitePages">
+            <button id="navSearchBtn" style="background:transparent; border:none; color:#b0b0b0; cursor:pointer;">🔍</button>
+          </div>
+        </li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <datalist id="sitePages">
+    <option value="home"></option>
+    <option value="about us"></option>
+    <option value="services"></option>
+    <option value="events"></option>
+    <option value="gallery"></option>
+    <option value="news"></option>
+    <option value="contact"></option>
+  </datalist>
+
+  <main class="container" style="padding: 60px 24px;">
+    <h2 style="font-size: 2.6rem; text-align: center; margin-bottom: 10px; font-weight: 800;">Concert Company Operations</h2>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 50px; max-width: 600px; margin-left: auto; margin-right: auto;">Providing industrial sound infrastructure pipelines, stage engineering deployment parameters, and stadium coordination logistics.</p>
+
+    <section style="margin-bottom: 60px;">
+      <h3 style="color: var(--accent); font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;">Service Commissioning Protocol</h3>
+      <ol>
+        <li>Submit stadium structural blueprints and telemetry parameters via our contact terminal.</li>
+        <li>Perform localized multi-channel active array acoustic mapping diagnostics simulation under guidance.</li>
+        <li>Authorize secure legal structural resource allocation clearance signatures framework.</li>
+        <li>Hardware cluster distribution deployment on-site with real-time active response loops testing.</li>
+      </ol>
+    </section>
+
+    <section style="margin-bottom: 60px;">
+      <h3 style="color: var(--text-primary); font-size: 1.5rem; font-weight: 700; margin-bottom: 10px;">Our Core Deliverables</h3>
+      <div class="grid-3" style="margin-top: 20px;">
+        <div class="card">
+          <h3 style="color: var(--accent); margin-bottom: 12px; font-size: 1.25rem;">Premium Asset Protection</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Cryptographically validated dynamic ticket code systems preventing unwanted third-party listing inflation and fraud.</p>
+        </div>
+        <div class="card">
+          <h3 style="color: #00ffcc; margin-bottom: 12px; font-size: 1.25rem;">Immersive Audio Provision</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">On-site high-fidelity acoustics mapping and professional spatial soundscape tuning consulting solutions for arena layout fields.</p>
+        </div>
+        <div class="card">
+          <h3 style="color: var(--accent-secondary); margin-bottom: 12px; font-size: 1.25rem;">Stage & Rigging Logistics</h3>
+          <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">Heavy infrastructure hardware deployment incorporating automated laser illumination tracking fields under active engineering oversight.</p>
+        </div>
+      </div>
+    </section>
+
+    <section style="margin-bottom: 60px; overflow-x: auto;">
+      <h3 style="color: var(--accent-secondary); font-size: 1.5rem; font-weight: 700; margin-bottom: 20px;">Tier Complexity Execution Mapping</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Operations Dimension</th>
+            <th>Standard Concourse</th>
+            <th>VIP Core Premium</th>
+            <th>Stadium Elite Ultra Matrix</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight: 600; color: #fff;">Spatial Audio Architecture</td>
+            <td style="color: var(--text-secondary);">Stereo Array Control</td>
+            <td>5.1 Spatial Surrounding System</td>
+            <td style="color: #00ffcc; font-weight: 700;">Dolby Atmos™ Live Active Array</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600; color: #fff;">Cryptographic Validation</td>
+            <td style="color: var(--text-secondary);">Static QR Generation</td>
+            <td>Rolling Dynamic Access Token</td>
+            <td style="color: #00ffcc; font-weight: 700;">Blockchain smart contract pass token</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600; color: #fff;">Hardware Rigging Weight Limit</td>
+            <td style="color: var(--text-secondary);">Up to 5 Metric Tons</td>
+            <td>Up to 15 Metric Tons</td>
+            <td style="color: #00ffcc; font-weight: 700;">Unlimited Overload Framework Control</td>
+          </tr>
+          <tr>
+            <td style="font-weight: 600; color: #fff;">Power Feed Redundancy Matrix</td>
+            <td style="color: var(--text-secondary);">Single Backup Generator</td>
+            <td>Dual Grid Failover Nodes</td>
+            <td style="color: #00ffcc; font-weight: 700;">Triple Grid Real-time Automated Failover</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section style="text-align: center; padding: 40px; background: rgba(138, 43, 226, 0.08); border: 2px dashed var(--accent); border-radius: var(--border-radius); margin-top: 40px;">
+      <h3 style="font-size: 1.4rem; margin-bottom: 10px;">Primary Global Distribution Channels</h3>
+      <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.95rem;">Looking for official primary partner ticketing distributions? Access active stadium entry passes through our primary provider portal link.</p>
+      <a href="https://www.ticketmaster.com" target="_blank" rel="noopener noreferrer" class="btn">Redirect to Official Ticketmaster Arena Page &rarr;</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; <span id="currentYear"></span> LiveXperience Enterprise Core Services. System Update Verified.</p>
+    </div>
+    <p>Live Date: <span id="globalLiveDate">Loading...</span></p>
+<p>Live Time: <span id="globalLiveClock">Loading...</span></p>
+<script src="clock.js"></script>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Clear Loading Animation
+      setTimeout(function() {
+        const screen = document.getElementById('loading-screen');
+        if(screen) { screen.style.opacity = '0'; setTimeout(function(){ screen.style.display='none'; },600); }
+      }, 1000);
+      
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+      // Navigation bar redirection mappings search
+      var searchPagesMap = { 'home':'index.html','about us':'about.html','services':'service.html','events':'portfolio.html','gallery':'gallery.html','news':'news..html','contact':'contact.html' };
+      document.getElementById('navSearchBtn').addEventListener('click', function() {
+        var q = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if(searchPagesMap[q]) window.location.href = searchPagesMap[q];
+      });
+
+      // Mobile navbar trigger 
+      var hamburger = document.querySelector('.hamburger');
+      var navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+      }
+    });
+  </script>
+</body>
+</html>

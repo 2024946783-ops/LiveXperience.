@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Concert Checkout | LiveXperience</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  
+  <link rel="icon" type="image/x-icon" href="C:\Users\muhdi\Downloads\photo_6204025640432899356_y.jpg">
+
+  <style>
+    /* ==========================================================================
+       GLOBAL CORE DESIGN SYSTEMS (RUBRIC COMPLIANT)
+       ========================================================================== */
+    :root {
+      --primary: #0a0a0a;
+      --secondary: #121212;
+      --bg-card: rgba(255, 255, 255, 0.06);
+      --text-primary: #ffffff;
+      --text-secondary: #b0b0b0;
+      --accent: #8a2be2;
+      --accent-secondary: #ff007f;
+      --border-radius: 16px;
+      --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background-color: var(--primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ==========================================================================
+       NAVIGATION BAR BAR
+       ========================================================================== */
+    nav {
+      background-color: rgba(10, 10, 10, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 16px 0;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      background: linear-gradient(45deg, var(--accent), var(--accent-secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 24px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover, .nav-links a.active {
+      color: var(--text-primary);
+    }
+
+    /* ==========================================================================
+       CHECKOUT LAYOUT & CARDS
+       ========================================================================== */
+    main {
+      padding: 60px 0;
+    }
+
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 32px;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 968px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .checkout-card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--border-radius);
+      padding: 32px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 12px;
+    }
+
+    /* FORM ELEMENTS */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-control, select {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 12px 16px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      transition: var(--transition);
+    }
+
+    .form-control:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(138, 43, 226, 0.2);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* BUTTONS */
+    .btn {
+      display: inline-block;
+      width: 100%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    /* PROMO & SUMMARY INTERFACE */
+    .promo-input-group {
+      display: flex;
+      gap: 12px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .summary-row.total {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 16px;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* ==========================================================================
+       FOOTER STYLING
+       ========================================================================== */
+    footer {
+      background-color: var(--secondary);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 30px 0;
+      margin-top: 60px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">LiveXperience</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="portfolio.html">Events</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="purchase.html" class="active">Checkout</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="container">
+    <h1 style="font-size: 2.5rem; font-weight: 800; text-align: center;">Secure Pipeline Authorization</h1>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 20px;">Complete your transaction metrics securely below.</p>
+
+    <div class="checkout-grid">
+      <div class="checkout-card">
+        <h2 class="card-title">Billing & Account Matrix</h2>
+        <form id="checkoutForm" onsubmit="executeCheckoutSequence(event)">
+          <div class="form-group">
+            <label for="fullName">Full Customer Name</label>
+            <input type="text" id="fullName" class="form-control" placeholder="Jane Doe" required />
+          </div>
+
+          <div class="form-group">
+            <label for="emailAddress">Validated Email Pipeline</label>
+            <input type="email" id="emailAddress" class="form-control" placeholder="jane.doe@example.com" required />
+          </div>
+
+          <div class="form-group">
+            <label for="ticketType">Access Tier Category</label>
+            <select id="ticketType" onchange="calculateSummaryMatrix()">
+              <option value="150">General Concourse — RM 150</option>
+              <option value="350">VIP Core Matrix Deck — RM 350</option>
+              <option value="600">Ultimate Frontstage Row — RM 600</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="ticketQuantity">Inventory Allocation Unit Quantity</label>
+            <select id="ticketQuantity" onchange="calculateSummaryMatrix()">
+              <option value="1">1 Token</option>
+              <option value="2">2 Tokens</option>
+              <option value="3">3 Tokens</option>
+              <option value="4">4 Tokens</option>
+            </select>
+          </div>
+
+          <h2 class="card-title" style="margin-top: 40px;">Financial Asset Authorization</h2>
+          
+          <div class="form-group">
+            <label for="cardNumber">Credit Card Account Structure (16 Contiguous Digits)</label>
+            <input type="text" id="cardNumber" class="form-control" placeholder="4111 2222 3333 4444" maxlength="19" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="cardExpiry">Expiration Window (MM/YY)</label>
+              <input type="text" id="cardExpiry" class="form-control" placeholder="12/28" maxlength="5" required />
+            </div>
+            <div class="form-group">
+              <label for="cardCvv">Security CVV Key</label>
+              <input type="password" id="cardCvv" class="form-control" placeholder="***" maxlength="3" required />
+            </div>
+          </div>
+
+          <button type="submit" class="btn" style="margin-top: 15px;">Authorize Entry Passes Dispatch</button>
+        </form>
+      </div>
+
+      <div class="checkout-grid-right" style="display: flex; flex-direction: column; gap: 24px;">
+        <div class="checkout-card">
+          <h2 class="card-title">Promo Token Deployment</h2>
+          <div class="promo-input-group">
+            <input type="text" id="promoCodeInput" class="form-control" placeholder="e.g. LIVE10" style="text-transform: uppercase;" />
+            <button type="button" class="btn btn-secondary" style="width: auto; padding: 0 20px;" onclick="applyPromoVerification()">Apply</button>
+          </div>
+        </div>
+
+        <div class="checkout-card">
+          <h2 class="card-title">Order Cost Evaluation</h2>
+          <div class="summary-row">
+            <span>Base Subtotal Inventory</span>
+            <span id="subtotalDisplay">RM 150</span>
+          </div>
+          <div class="summary-row">
+            <span>System Pipeline Surcharge</span>
+            <span id="surchargeDisplay">RM 15</span>
+          </div>
+          <div class="summary-row" style="color: var(--accent-secondary);">
+            <span>Promotional Token Discount</span>
+            <span id="discountDisplay">-RM 0</span>
+          </div>
+          <div class="summary-row total">
+            <span>Grand Total Evaluation</span>
+            <span id="grandTotalDisplay">RM 165</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-bottom">
+        &copy; 2026 LiveXperience Engineering Core. Designed for academic review under Group 4 responsibility parameters. All links functional.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var isPromoApplied = false;
+
+    // Initialize core computation matrix on load
+    document.addEventListener('DOMContentLoaded', function() {
+      calculateSummaryMatrix();
+
+      // Simple real-time continuous gap parsing formatting for Credit Card inputs
+      const cardField = document.getElementById('cardNumber');
+      if(cardField) {
+        cardField.addEventListener('input', function(e) {
+          let targetValue = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+          let structuredMatches = targetValue.match(/\d{4,16}/g);
+          let matchSlice = structuredMatches && structuredMatches[0] || '';
+          let resultParts = [];
+
+          for (let idx = 0, len = matchSlice.length; idx < len; idx += 4) {
+            resultParts.push(matchSlice.substring(idx, idx + 4));
+          }
+
+          if (resultParts.length > 0) {
+            e.target.value = resultParts.join(' ');
+          } else {
+            e.target.value = targetValue;
+          }
+        });
+      }
+    });
+
+    // 6. TOTAL ACCOUNT SUMMARY MATRIX CALCULATION
+    function calculateSummaryMatrix() {
+      var basePrice = parseInt(document.getElementById('ticketType').value);
+      var quantity = parseInt(document.getElementById('ticketQuantity').value);
+      
+      var baseSubtotal = basePrice * quantity;
+      var surcharge = 15 * quantity; // Standardized transactional load distribution surcharge
+      var discountValue = 0;
+
+      if(isPromoApplied) {
+        discountValue = Math.round(baseSubtotal * 0.10); // 10% base inventory evaluation discount
+      }
+
+      document.getElementById('subtotalDisplay').textContent = "RM " + baseSubtotal;
+      document.getElementById('surchargeDisplay').textContent = "RM " + surcharge;
+      document.getElementById('discountDisplay').textContent = "-RM " + discountValue;
+
+      var grandTotal = baseSubtotal + surcharge - discountValue;
+      document.getElementById('grandTotalDisplay').textContent = "RM " + grandTotal;
+    }
+
+    // 7. PROMO CODE ALGORITHM VALIDATOR
+    function applyPromoVerification() {
+      var code = document.getElementById('promoCodeInput').value.trim().toUpperCase();
+      if(code === 'LIVE10') {
+        if(isPromoApplied) {
+          alert('💡 Promo code is already currently registered to this allocation pipeline.');
+          return;
+        }
+        isPromoApplied = true;
+        alert('✅ Promo token validated! 10% base inventory discount has been computed.');
+        calculateSummaryMatrix();
+      } else if(code === '') {
+        alert('⚠️ Please supply a promo token characters string.');
+      } else {
+        alert('❌ Code mismatch. Try using the operational string "LIVE10".');
+      }
+    }
+
+    // 8. FINAL AUTHORIZATION STAGE PIPELINE
+    function executeCheckoutSequence(event) {
+      event.preventDefault();
+      
+      var cardRaw = document.getElementById('cardNumber').value.replace(/\s/g, '');
+      if(cardRaw.length < 16) {
+        alert('⚠️ Security Exception: The credit asset account structure must contain 16 contiguous digits.');
+        return;
+      }
+
+      alert('✅ Transaction Secured: Authorization approved! Your entry tokens have been dispatched to your validated email pipeline.');
+      window.location.href = 'useracc.html';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery Matrix – LiveXperience Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.04);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f; --success: #00ffcc;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); line-height: 1.6; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    
+    /* UNIVERSAL NAV SYSTEM */
+    nav { background: rgba(10, 10, 10, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255, 255, 255, 0.08); position: fixed; top: 0; width: 100%; z-index: 1000; height: 70px; display: flex; align-items: center; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .logo { font-size: 1.5rem; font-weight: 800; background: linear-gradient(45deg, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-decoration: none; }
+    .nav-wrapper { display: flex; align-items: center; gap: 30px; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: var(--text-primary); text-shadow: 0 0 10px var(--accent); }
+    .search-box { display: flex; align-items: center; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 30px; padding: 4px 14px; }
+    .search-box input { background: transparent; border: none; color: #fff; font-size: 0.85rem; padding: 6px; outline: none; width: 180px; }
+    .search-box button { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; }
+
+    .meta-bar { background: var(--secondary); padding: 80px 0 10px; font-size: 0.8rem; color: var(--text-secondary); border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .meta-flex { display: flex; justify-content: space-between; align-items: center; }
+    .clock-widget { display: flex; align-items: center; gap: 8px; color: var(--success); font-family: monospace; font-weight: 600; }
+
+    /* GRID ARCHITECTURE SPECIFICATION FOR IMAGE GALLERY */
+    .gallery-matrix-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin: 40px 0; }
+    .gallery-item-node { background: var(--secondary); border-radius: var(--border-radius); border: 1px solid rgba(255,255,255,0.05); padding: 15px; transition: var(--transition); }
+    .gallery-item-node:hover { transform: scale(1.02); border-color: var(--accent); box-shadow: 0 10px 25px rgba(138,43,226,0.2); }
+    
+    .gallery-frame-img { width: 100%; height: 240px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); transition: var(--transition); cursor: zoom-in; }
+    .gallery-frame-img:hover { filter: brightness(1.15); }
+    .gallery-item-node figcaption { font-size: 0.8rem; color: var(--text-secondary); margin-top: 12px; font-style: italic; line-height: 1.4; text-align: center; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 10px; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: transparent; border: none; outline: none; }
+    .hamburger span { width: 25px; height: 3px; background-color: var(--text-primary); border-radius: 2px; }
+
+    footer { border-top: 1px solid rgba(255,255,255,0.08); padding: 30px 0; background: var(--secondary); text-align: center; font-size: 0.85rem; color: var(--text-secondary); }
+    @media (max-width: 992px) { .gallery-matrix-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 768px) {
+      .hamburger { display: flex; }
+      .nav-wrapper { display: none; width: 100%; position: absolute; top: 70px; left: 0; background: var(--secondary); flex-direction: column; padding: 30px; }
+      .nav-wrapper.active { display: flex; }
+      .nav-links { flex-direction: column; align-items: center; width: 100%; }
+      .gallery-matrix-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">LiveXperience.</a>
+      <button class="hamburger" aria-label="Toggle Menu"><span></span><span></span><span></span></button>
+      <div class="nav-wrapper">
+        <ul class="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About Board</a></li>
+          <li><a href="service.html">Our Services</a></li>
+          <li><a href="portfolio.html">Concert Hub</a></li>
+          <li><a href="gallery.html" class="active">Gallery Matrix</a></li>
+          <li><a href="contact.html">System Core</a></li>
+        </ul>
+        <div class="search-box">
+          <input type="text" id="navSearchInput" placeholder="Search parameters..." list="sitePages">
+          <button id="navSearchBtn">🔍</button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="meta-bar">
+    <div class="container meta-flex">
+      <div>VISUAL MEMORY RECORDERS: <span style="color:var(--accent-secondary);">RESOLVED_MATRICES</span></div>
+      <div class="clock-widget">🌐 SYSTEM RUNTIME CLOCK: <span id="globalLiveClock">00:00:00 AM</span></div>
+    </div>
+  </div>
+
+  <main class="container">
+    
+    <section style="padding: 40px 0 10px;">
+      <h2>High Fidelity Live Event Visual Memory Matrix</h2>
+      <p style="color: var(--text-secondary);">Documenting dynamic crowd densities and advanced stage lighting spectrum parameters across past successful execution windows.</p>
+    </section>
+
+    <section class="gallery-matrix-grid">
+      
+      <figure class="gallery-item-node">
+        <img src="https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&h=300&fit=crop" class="gallery-frame-img" alt="Stadium High Phase Laser Intersect Array Mode">
+        <figcaption>Matrix Frame 2.1: Multi-Axis Stage Laser Array Calibration during Neo-Resonance Main Set Workflow.</figcaption>
+      </figure>
+
+      <figure class="gallery-item-node">
+        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=400&h=300&fit=crop" class="gallery-frame-img" alt="Distributed Arena Audience Tracking Grid Layout">
+        <figcaption>Matrix Frame 2.2: Dynamic Density Tracking of Audience Sectors During General Admission Synchronization Waves.</figcaption>
+      </figure>
+
+      <figure class="gallery-item-node">
+        <img src="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=300&fit=crop" class="gallery-frame-img" alt="Central Mixing Desk Signal processing Node Console">
+        <figcaption>Matrix Frame 2.3: Central Soundboard Equalization Desk Balancing Low-Frequency Phase Coherence Fields.</figcaption>
+      </figure>
+
+      <figure class="gallery-item-node">
+        <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=400&h=300&fit=crop" class="gallery-frame-img" alt="Ambiance Stage Lighting Core Overdrive">
+        <figcaption>Matrix Frame 2.4: Arena Wide Ambient Lighting Truss Deployment Optimizing High Intensity Visual Coverage Angles.</figcaption>
+      </figure>
+
+      <figure class="gallery-item-node">
+        <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=400&h=300&fit=crop" class="gallery-frame-img" alt="Front Row Acoustic Wave Field Dispersion Monitoring">
+        <figcaption>Matrix Frame 2.5: Near-Field Spatial Arrays Processing Transients For Premium Front Tier Audiences.</figcaption>
+      </figure>
+
+      <figure class="gallery-item-node">
+        <img src="https://static.vecteezy.com/system/resources/previews/026/794/658/original/concert-stage-scenery-with-spotlights-colored-lights-smoke-free-photo.jpg" class="gallery-frame-img" alt="Late Evening Stadium Reverb Boundary Evaluation">
+        <figcaption>Matrix Frame 2.6: Mid-Range Sound Field Propagation Analysis Across Boundaries Under Full Enclosure Climates.</figcaption>
+      </figure>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 LiveXperience High Fidelity Gallery Node Asset Framework. Portfolio Group 4 Submission Matrix Review.
+    </div>
+  </footer>
+
+  <datalist id="sitePages">
+    <option value="Home"><option value="About Board"><option value="Our Services"><option value="Concert Hub"><option value="Gallery Matrix"><option value="System Core">
+  </datalist>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      function processClockTick() {
+        const timestampTarget = document.getElementById('globalLiveClock');
+        if (timestampTarget) timestampTarget.textContent = new Date().toLocaleTimeString();
+      }
+      setInterval(processClockTick, 1000); processClockTick();
+
+      const structuralHamburger = document.querySelector('.hamburger');
+      const mobileNavigationWrapper = document.querySelector('.nav-wrapper');
+      if (structuralHamburger && mobileNavigationWrapper) {
+        structuralHamburger.addEventListener('click', function() { mobileNavigationWrapper.classList.toggle('active'); });
+      }
+
+      const centralizedRoutingMatrix = { 'home':'index.html','about board':'about.html','about':'about.html','our services':'service.html','services':'service.html','concert hub':'portfolio.html','events':'portfolio.html','gallery matrix':'gallery.html','gallery':'gallery.html','system core':'contact.html','contact':'contact.html' };
+      function dispatchSearchRouting() {
+        const userQueryString = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if (centralizedRoutingMatrix[userQueryString]) window.location.href = centralizedRoutingMatrix[userQueryString];
+        else if (userQueryString !== '') alert('❌ Match Not Found.');
+      }
+      document.getElementById('navSearchBtn').addEventListener('click', dispatchSearchRouting);
+    });
+  </script>
+</body>
+</html>

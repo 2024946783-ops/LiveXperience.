@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us – Meet Our Executive Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.04);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; }
+    .container { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Loading Display Screens Sequence */
+    #loading-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 9999; display: flex; flex-direction: column; justify-content: center; align-items: center; transition: opacity 0.6s ease; }
+    .spinner { border: 4px solid rgba(255, 255, 255, 0.1); width: 60px; height: 60px; border-radius: 50%; border-left-color: var(--accent); animation: spin 1s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    /* Header Panel bar */
+    nav { background: rgba(18, 18, 18, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); position: sticky; top: 0; z-index: 100; height: 70px; display: flex; align-items: center; }
+    .nav-container { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+    .logo { font-weight: 800; font-size: 1.4rem; color: #fff; text-decoration: none; }
+    .logo span { color: var(--accent); }
+    .nav-links { display: flex; gap: 24px; list-style: none; align-items: center; }
+    .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .hamburger { display: none; cursor: pointer; flex-direction: column; gap: 6px; }
+    .hamburger span { width: 25px; height: 2px; background: #fff; }
+
+    /* Navigation Search Functionality elements definitions */
+    .search-wrapper { position: relative; display: flex; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 6px 12px; border-radius: 20px; }
+    .search-wrapper input { background: transparent; border: none; color: #fff; outline: none; font-size: 0.85rem; }
+
+    /* Board Team Layout Matrix Grid Elements */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 30px; }
+    .team-card { background: var(--bg-card); border: 1px solid rgba(255,255,255,0.05); padding: 32px; border-radius: var(--border-radius); text-align: center; transition: var(--transition); display: flex; flex-direction: column; align-items: center; }
+    .team-card:hover { transform: translateY(-4px); border-color: rgba(255,255,255,0.15); }
+    
+    /* Image tag specifications for responsive sizing profile blocks */
+    .profile-avatar { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin-bottom: 20px; border: 3px solid var(--accent); background: var(--secondary); display: block; }
+    
+    .team-card h3 { font-size: 1.3rem; margin-bottom: 6px; color: #fff; font-weight: 700; }
+    .team-card .role { font-size: 0.85rem; color: var(--accent-secondary); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 16px; }
+    .team-card p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.6; }
+
+    /* Anchor jumping link button elements style rules template */
+    .anchor-btn { display: inline-block; background: rgba(255,255,255,0.04); color: #fff; text-decoration: none; padding: 12px 28px; border-radius: 30px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.9rem; font-weight: 600; transition: var(--transition); }
+    .anchor-btn:hover { background: var(--accent); border-color: var(--accent); transform: translateY(-2px); }
+
+    footer { background: var(--secondary); padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; position: absolute; top: 70px; left: 0; width: 100%; background: var(--secondary); flex-direction: column; padding: 24px; }
+      .nav-links.active { display: flex; }
+      .hamburger { display: flex; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-screen">
+    <div class="spinner"></div>
+    <p style="color:var(--text-secondary); margin-top:20px; font-size:0.9rem; letter-spacing:2px;">COMPILING TEAM DIRECTORY...</p>
+  </div>
+
+  <nav>
+    <div class="container nav-container">
+      <a href="index.html" class="logo">Live<span>Xperience</span></a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html" class="active">About Team</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="portfolio.html">Concert Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="news..html">News Hub</a></li>
+        <li><a href="contact.html">Contact Core</a></li>
+        <li>
+          <div class="search-wrapper">
+            <input type="text" id="navSearchInput" placeholder="Search page..." list="sitePages">
+            <button id="navSearchBtn" style="background:transparent; border:none; color:#b0b0b0; cursor:pointer;">🔍</button>
+          </div>
+        </li>
+      </ul>
+      <div class="hamburger">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <datalist id="sitePages">
+    <option value="home"></option>
+    <option value="about us"></option>
+    <option value="services"></option>
+    <option value="events"></option>
+    <option value="gallery"></option>
+    <option value="news"></option>
+    <option value="contact"></option>
+  </datalist>
+
+  <main class="container" style="padding: 60px 24px;">
+    
+    <div style="text-align: center; margin-bottom: 50px;">
+      <a href="#executive-board-matrix" class="anchor-btn">Skip Directly to Executive Management Board &darr;</a>
+    </div>
+
+    <h2 id="executive-board-matrix" style="font-size: 2.5rem; font-weight: 800; text-align: center; margin-bottom: 10px;">Executive Management Board</h2>
+    <p style="text-align: center; color: var(--text-secondary); margin-bottom: 40px;">Corporate operational leadership orchestrating macro scale entertainment deployments.</p>
+
+    <div class="team-grid">
+      
+      <div class="team-card">
+        <img src="C:\Users\muhdi\Downloads\2CF5BE67-8735-4940-ACC2-C1085CE34649 (1).JPG" class="profile-avatar" alt="Iman Haziq">
+        <h3>Iman Haziq</h3>
+        <div class="role">CEO of LiveXperience</div>
+        <p>Orchestrates global venture capital expansions, corporate layout initiatives, and macro engineering infrastructure scaling guidelines.</p>
+      </div>
+
+      <div class="team-card">
+        <img src="C:\Users\muhdi\Downloads\photo_6208651023857946743_y.jpg" class="profile-avatar" alt="Haziq Farhan">
+        <h3>Haziq Farhan</h3>
+        <div class="role">Deputy Chairman of LiveXperience</div>
+        <p>Coordinates board framework guidelines, asset auditing parameters, and high-level strategy orchestration workflows.</p>
+      </div>
+
+      <div class="team-card">
+        <img src="C:\Users\muhdi\Downloads\photo_6208651023857946741_x.jpg" class="profile-avatar" alt="Edzry Haziq">
+        <h3>Edzry Haziq</h3>
+        <div class="role">Chief Director of LiveXperience</div>
+        <p>Directs day-to-day deployment teams, validating server infrastructure matrices and structural hardware mapping compliance.</p>
+      </div>
+
+      <div class="team-card">
+        <img src="C:\Users\muhdi\Downloads\photo_6208651023857946742_x.jpg" class="profile-avatar" alt="Intan Suraya">
+        <h3>Intan Suraya</h3>
+        <div class="role">Biggest Investor of LiveXperience</div>
+        <p>Cornerstone stakeholder enabling comprehensive technology expansion and platform security funding modules.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <p>Live Date: <span id="globalLiveDate">Loading...</span></p>
+<p>Live Time: <span id="globalLiveClock">Loading...</span></p>
+     <script src="clock.js"></script>
+
+    <div class="container" style="text-align: center; font-size: 0.85rem; color: var(--text-secondary);">
+      &copy; 2026 LiveXperience. Group 4 Portfolio Assignment Core. All links validated.
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Clear System Loading animation screen routines
+      setTimeout(function() {
+        const screen = document.getElementById('loading-screen');
+        if(screen) { screen.style.opacity = '0'; setTimeout(function(){ screen.style.display='none'; },600); }
+      }, 1000);
+
+      // Search field key redirection array routing logic
+      var searchPagesMap = { 'home':'index.html','about us':'about.html','services':'service.html','events':'portfolio.html','gallery':'gallery.html','news':'news..html','contact':'contact.html' };
+      document.getElementById('navSearchBtn').addEventListener('click', function() {
+        var q = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if(searchPagesMap[q]) window.location.href = searchPagesMap[q];
+      });
+
+      var hamburger = document.querySelector('.hamburger');
+      var navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+
+        
+      }
+    });
+  </script>
+</body>
+</html>

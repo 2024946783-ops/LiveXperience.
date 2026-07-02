@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account – LiveXperience</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/x-icon" href="C:\Users\muhdi\Downloads\photo_6204025640432899356_y.jpg">
+  <style>
+    :root {
+      --primary: #0a0a0a; --secondary: #121212; --bg-card: rgba(255, 255, 255, 0.06);
+      --text-primary: #ffffff; --text-secondary: #b0b0b0;
+      --accent: #8a2be2; --accent-secondary: #ff007f;
+      --border-radius: 16px; --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      --font-body: 'Inter', sans-serif;
+      --accent-success: #00ffcc;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: var(--font-body); background-color: var(--primary); color: var(--text-primary); line-height: 1.7; padding-top: 100px; }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    
+    #loading-screen {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000000; z-index: 10000;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s;
+    }
+    .loader-spinner { width: 75px; height: 75px; border: 5px solid rgba(255, 255, 255, 0.04); border-top: 5px solid var(--accent); border-right: 5px solid var(--accent-secondary); border-radius: 50%; animation: spin 1.2s linear infinite; }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    .navbar { position: fixed; top: 0; left: 0; width: 100%; padding: 16px 0; background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(24px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); z-index: 999; }
+    .navbar-container { display: flex; justify-content: space-between; align-items: center; }
+    .navbar .logo { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .nav-links { display: flex; gap: 32px; list-style: none; align-items: center; }
+    .nav-links a { font-size: 0.95rem; color: var(--text-secondary); transition: color var(--transition); }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    
+    .clock-widget { font-size: 0.85rem; font-family: monospace; background: rgba(255,255,255,0.05); padding: 4px 10px; border-radius: 4px; color: var(--accent-success); }
+    .search-redirect-container { display: flex; align-items: center; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px; padding: 6px 14px; }
+    .search-redirect-input { background: transparent; border: none; color: #fff; outline: none; width: 150px; }
+    .search-redirect-btn { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; }
+    
+    .card { background: var(--secondary); border: 1px solid rgba(255,255,255,0.05); border-radius: var(--border-radius); padding: 40px; max-width: 500px; margin: 40px auto; }
+    .btn { display: block; text-align: center; background: linear-gradient(135deg, var(--accent), var(--accent-secondary)); padding: 12px; border-radius: 30px; color: #fff; font-weight: 600; margin-top: 20px; }
+    .hamburger { display: none; flex-direction: column; gap: 6px; cursor: pointer; background: transparent; border: none; }
+    .hamburger span { width: 28px; height: 3px; background-color: #fff; }
+
+    footer { background: #050505; padding: 30px 0; border-top: 1px solid rgba(255,255,255,0.05); text-align: center; font-size: 0.85rem; color: var(--text-secondary); margin-top: 60px; }
+    @media(max-width: 992px) {
+      .hamburger { display: flex; }
+      .nav-links { position: fixed; top: 78px; left: -100%; width: 100%; height: calc(100vh - 78px); background: var(--primary); flex-direction: column; gap: 40px; padding-top: 60px; transition: left 0.4s ease; }
+      .nav-links.active { left: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="loading-screen"><div class="loader-spinner"></div></div>
+
+  <nav class="navbar">
+    <div class="container navbar-container">
+      <a href="index.html" class="logo">LiveXperience</a>
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="service.html">Services</a></li>
+        <li><a href="portfolio.html">Events</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="news..html">News</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><div id="globalLiveClock" class="clock-widget">00:00:00 AM</div></li>
+      </ul>
+      <div style="display: flex; align-items: center; gap: 15px;">
+        <div class="search-redirect-container">
+          <input type="text" id="navSearchInput" placeholder="Search page..." list="sitePages" class="search-redirect-input">
+          <button id="navSearchBtn" class="search-redirect-btn">🔍</button>
+        </div>
+        <button class="hamburger"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </nav>
+
+  <datalist id="sitePages">
+    <option value="Home"><option value="About Us"><option value="Services"><option value="Events"><option value="Gallery"><option value="News"><option value="Contact">
+  </datalist>
+
+  <main class="container" style="padding: 60px 24px;">
+    <div class="card">
+      <h2 style="margin-bottom: 15px; font-size: 1.8rem; text-align:center;">Fan Profile Hub</h2>
+      <p style="text-align:center; color:var(--text-secondary); margin-bottom:20px;">Authenticated Verified User Account</p>
+      <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+        <p><strong>System Identification Level:</strong> VIP Access Tier 1</p>
+        <p><strong>Active Orders:</strong> 1 Pending Synchronization</p>
+      </div>
+      <a href="#" onclick="alert('📄 Initializing secure download protocols...')" class="btn">Download Pass (.PDF)</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 LiveXperience Engineering Core. Designed for academic review. System Last Checked: <span id="metaLastModified"></span></p>
+    </div>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(function() {
+        const screen = document.getElementById('loading-screen');
+        if(screen) { screen.style.opacity = '0'; setTimeout(function(){ screen.style.display='none'; },600); }
+      }, 4500);
+      
+      function runLiveClockUpdate() {
+        const clk = document.getElementById('globalLiveClock');
+        if (clk) { clk.textContent = new Date().toLocaleTimeString(); }
+      }
+      setInterval(runLiveClockUpdate, 1000); runLiveClockUpdate();
+      
+      const modifiedElement = document.getElementById('metaLastModified');
+      if (modifiedElement) { modifiedElement.textContent = document.lastModified; }
+
+      var searchPagesMap = { 'home':'index.html','about us':'about.html','services':'service.html','events':'portfolio.html','gallery':'gallery.html','news':'news..html','contact':'contact.html' };
+      document.getElementById('navSearchBtn').addEventListener('click', function() {
+        var q = document.getElementById('navSearchInput').value.trim().toLowerCase();
+        if(searchPagesMap[q]) window.location.href = searchPagesMap[q];
+      });
+
+      var hamburger = document.querySelector('.hamburger');
+      var navLinks = document.querySelector('.nav-links');
+      if (hamburger && navLinks) {
+        hamburger.addEventListener('click', function() { navLinks.classList.toggle('active'); });
+      }
+    });
+  </script>
+</body>
+</html>

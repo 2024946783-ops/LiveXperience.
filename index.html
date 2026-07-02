@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LiveXperience – Your Concert Starts Here</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <style>
+        /* CORE DESIGN SYSTEM STYLING */
+        :root {
+            --primary: #0a0a0a;
+            --secondary: #121212;
+            --bg-card: rgba(255, 255, 255, 0.04);
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #8a2be2;
+            --accent-secondary: #ff007f;
+            --success: #00ffcc;
+            --border-radius: 16px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --font-body: 'Inter', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* GLOBAL NAVIGATION BAR WITH INTEGRATED SEARCH TOOLBAR */
+        nav {
+            background: rgba(10, 10, 10, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            height: 70px;
+            display: flex;
+            align-items: center;
+        }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(45deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-decoration: none;
+        }
+        .nav-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            list-style: none;
+        }
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--text-primary);
+            text-shadow: 0 0 10px var(--accent);
+        }
+
+        /* SEARCH TOOLBAR DESIGN */
+        .search-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 30px;
+            padding: 4px 14px;
+            transition: var(--transition);
+        }
+        .search-box:focus-within {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 12px rgba(255, 0, 127, 0.3);
+        }
+        .search-box input {
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 0.85rem;
+            padding: 6px;
+            outline: none;
+            width: 180px;
+        }
+        .search-box button {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        .search-box button:hover {
+            color: var(--accent-secondary);
+        }
+
+        /* ===== LOGIN / AUTH BUTTON (ADDED) ===== */
+        .auth-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 2px 12px rgba(138, 43, 226, 0.3);
+            white-space: nowrap;
+        }
+        .auth-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 18px rgba(255, 0, 127, 0.4);
+        }
+        .auth-btn.logged-in {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 14px 6px 10px;
+        }
+        .auth-btn.logged-in:hover {
+            border-color: var(--accent-secondary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #fff;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        .user-name-display {
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            max-width: 80px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .logout-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            cursor: pointer;
+            padding: 2px 8px;
+            border-radius: 12px;
+            transition: var(--transition);
+        }
+        .logout-btn:hover {
+            color: var(--accent-secondary);
+            background: rgba(255, 0, 127, 0.1);
+        }
+
+        /* ===== LOGIN MODAL OVERLAY ===== */
+        .auth-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .auth-overlay.open {
+            display: flex;
+        }
+
+        .auth-modal {
+            background: var(--secondary);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--border-radius);
+            padding: 40px 36px;
+            max-width: 440px;
+            width: 100%;
+            position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            animation: modalFadeIn 0.3s ease-out;
+        }
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.96) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .auth-modal .close-modal {
+            position: absolute;
+            top: 16px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .auth-modal .close-modal:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .auth-modal h2 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+            background: linear-gradient(45deg, var(--accent), var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .auth-modal .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 24px;
+        }
+
+        /* Tabs */
+        .auth-tabs {
+            display: flex;
+            gap: 4px;
+            background: rgba(255, 255, 255, 0.04);
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 24px;
+        }
+        .auth-tabs button {
+            flex: 1;
+            padding: 10px 0;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-body);
+        }
+        .auth-tabs button.active {
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--text-primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .auth-tabs button:hover:not(.active) {
+            color: var(--text-primary);
+        }
+
+        /* Forms */
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .auth-form.active {
+            display: flex;
+        }
+
+        .auth-form .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .auth-form label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .auth-form input {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-family: var(--font-body);
+            outline: none;
+        }
+        .auth-form input:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 0 3px rgba(255, 0, 127, 0.15);
+        }
+        .auth-form input::placeholder {
+            color: rgba(255, 255, 255, 0.25);
+        }
+
+        .auth-form .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+        }
+        .auth-form .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-transform: none;
+            letter-spacing: 0;
+            font-weight: 400;
+            cursor: pointer;
+        }
+        .auth-form .form-options label input[type="checkbox"] {
+            accent-color: var(--accent-secondary);
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+        }
+        .auth-form .form-options a {
+            color: var(--accent-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+        .auth-form .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .auth-form .submit-btn {
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-body);
+            margin-top: 4px;
+            box-shadow: 0 4px 16px rgba(138, 43, 226, 0.3);
+        }
+        .auth-form .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(255, 0, 127, 0.4);
+        }
+
+        .auth-form .error-msg {
+            color: #ff4466;
+            font-size: 0.85rem;
+            background: rgba(255, 68, 102, 0.1);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border-left: 3px solid #ff4466;
+            display: none;
+        }
+        .auth-form .error-msg.show {
+            display: block;
+        }
+        .auth-form .success-msg {
+            color: var(--success);
+            font-size: 0.85rem;
+            background: rgba(0, 255, 204, 0.08);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border-left: 3px solid var(--success);
+            display: none;
+        }
+        .auth-form .success-msg.show {
+            display: block;
+        }
+
+        .auth-divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            margin: 4px 0;
+        }
+        .auth-divider::before,
+        .auth-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+        }
+
+        /* LIVE METRIC HEADER METADATA */
+        .meta-bar {
+            background: var(--secondary);
+            padding: 80px 0 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+        }
+        .meta-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .clock-widget {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--success);
+            font-family: monospace;
+            font-weight: 600;
+        }
+
+        /* HERO SECTION & ANIMATIONS */
+        .hero {
+            padding: 80px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            animation: pulseGlow 3s infinite alternate;
+        }
+        .hero p {
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 0, 127, 0.5);
+        }
+
+        /* COUNTER STATISTICS DESIGN */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 40px 0;
+        }
+        .stat-card {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: var(--transition);
+        }
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.07);
+        }
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-secondary);
+            margin-bottom: 5px;
+        }
+
+        /* IMAGE MAP & IMAGE WRAPPERS */
+        .media-section {
+            padding: 60px 0;
+            background: var(--secondary);
+            border-radius: var(--border-radius);
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .interactive-map-container {
+            text-align: center;
+            margin: 30px auto;
+            max-width: 100%;
+            padding: 0 15px;
+        }
+        .responsive-img {
+            max-width: 100%;
+            height: auto;
+            border-radius: var(--border-radius);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+        .responsive-img:hover {
+            border-color: var(--accent);
+        }
+        .caption-text {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* MULTIMEDIA ELEMENT CONTAINER */
+        .multimedia-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .multimedia-box {
+            background: var(--primary);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .multimedia-box h4 {
+            margin-bottom: 15px;
+            color: var(--success);
+            font-size: 1.1rem;
+        }
+        video,
+        audio {
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        /* SEMANTIC TYPE SAMPLER BOXES */
+        .semantic-sampler {
+            background: var(--bg-card);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            margin: 40px 0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        pre {
+            background: #000;
+            padding: 15px;
+            border-radius: 8px;
+            color: var(--success);
+            font-family: monospace;
+            font-size: 0.85rem;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* HAMBURGER STYLING */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            outline: none;
+        }
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* FOOTER SYSTEM */
+        footer {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 40px 0;
+            background: var(--secondary);
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .footer-grid h4 {
+            color: #fff;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+        .footer-grid ul {
+            list-style: none;
+        }
+        .footer-grid ul li {
+            margin-bottom: 8px;
+        }
+        .footer-grid ul li a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        .footer-grid ul li a:hover {
+            color: var(--accent);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.8rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes pulseGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(138, 43, 226, 0.2);
+            }
+            100% {
+                text-shadow: 0 0 25px rgba(255, 0, 127, 0.6);
+            }
+        }
+
+        /* RESPONSIVE BREAKPOINTS */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+            .nav-wrapper {
+                display: none;
+                width: 100%;
+                position: absolute;
+                top: 70px;
+                left: 0;
+                background: var(--secondary);
+                flex-direction: column;
+                padding: 30px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+            }
+            .nav-wrapper.active {
+                display: flex;
+            }
+            .nav-links {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+            .search-box {
+                width: 100%;
+                max-width: 300px;
+                margin-top: 15px;
+            }
+            .stats-grid,
+            .multimedia-row,
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 {
+                font-size: 2.3rem;
+            }
+
+            /* Auth button on mobile */
+            .auth-btn {
+                margin-top: 12px;
+                width: 100%;
+                text-align: center;
+                justify-content: center;
+            }
+            .auth-btn.logged-in {
+                justify-content: center;
+            }
+            .auth-modal {
+                padding: 28px 20px;
+            }
+            .meta-flex {
+                flex-direction: column;
+                gap: 6px;
+                align-items: flex-start;
+            }
+        }
+
+        /* extra small tweaks */
+        @media (max-width: 480px) {
+            .auth-modal {
+                padding: 24px 16px;
+            }
+            .auth-modal h2 {
+                font-size: 1.3rem;
+            }
+            .auth-form input {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="container nav-container">
+            <a href="index.html" class="logo">LiveXperience.</a>
+            <button class="hamburger" aria-label="Toggle Navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <div class="nav-wrapper">
+                <ul class="nav-links">
+                    <li><a href="index.html" class="active">Home</a></li>
+                    <li><a href="about.html">About Board</a></li>
+                    <li><a href="service.html">Our Services</a></li>
+                    <li><a href="portfolio.html">Concert Hub</a></li>
+                    <li><a href="gallery.html">Gallery Matrix</a></li>
+                    <li><a href="contact.html">System Core</a></li>
+                </ul>
+                <div class="search-box">
+                    <input type="text" id="navSearchInput" placeholder="Search parameters..." list="sitePages">
+                    <button id="navSearchBtn" aria-label="Submit Search">🔍</button>
+                </div>
+                <!-- AUTH BUTTON (ADDED) -->
+                <button class="auth-btn" id="authToggleBtn">🔐 Login</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== AUTH MODAL OVERLAY (ADDED) ===== -->
+    <div class="auth-overlay" id="authOverlay">
+        <div class="auth-modal">
+            <button class="close-modal" id="authCloseBtn" aria-label="Close login modal">✕</button>
+            <h2>Access Core</h2>
+            <p class="subtitle">Authenticate to unlock full system capabilities</p>
+
+            <div class="auth-tabs">
+                <button class="active" data-tab="login">Login</button>
+                <button data-tab="signup">Sign Up</button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form class="auth-form active" id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="loginEmail">Email Address</label>
+                    <input type="email" id="loginEmail" placeholder="you@domain.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="••••••••" required />
+                </div>
+                <div class="form-options">
+                    <label><input type="checkbox" id="rememberMe" /> Remember me</label>
+                    <a href="#" id="forgotLink">Forgot password?</a>
+                </div>
+                <div class="error-msg" id="loginError"></div>
+                <button type="submit" class="submit-btn">🚀 Login</button>
+                <div class="auth-divider">or</div>
+                <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);">
+                    New here? <a href="#" id="switchToSignup" style="color:var(--accent-secondary);font-weight:600;text-decoration:none;">Create account</a>
+                </p>
+            </form>
+
+            <!-- SIGNUP FORM -->
+            <form class="auth-form" id="signupForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="signupName">Full Name</label>
+                    <input type="text" id="signupName" placeholder="Jane Doe" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">Email Address</label>
+                    <input type="email" id="signupEmail" placeholder="you@domain.com" required />
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">Password</label>
+                    <input type="password" id="signupPassword" placeholder="Min 6 characters" required minlength="6" />
+                </div>
+                <div class="form-group">
+                    <label for="signupConfirm">Confirm Password</label>
+                    <input type="password" id="signupConfirm" placeholder="••••••••" required />
+                </div>
+                <div class="error-msg" id="signupError"></div>
+                <div class="success-msg" id="signupSuccess"></div>
+                <button type="submit" class="submit-btn">✨ Create Account</button>
+                <div class="auth-divider">or</div>
+                <p style="text-align:center;font-size:0.85rem;color:var(--text-secondary);">
+                    Already registered? <a href="#" id="switchToLogin" style="color:var(--accent-secondary);font-weight:600;text-decoration:none;">Sign in</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <div class="meta-bar">
+        <div class="container meta-flex">
+            <div>SYSTEM INDEX: <span style="color:var(--accent-secondary);">ONLINE</span> | REVISION: v4.8.2</div>
+            <div class="clock-widget">
+                <span>🌐 SYSTEM RUNTIME CLOCK:</span>
+                <p>Live Date: <span id="globalLiveDate">Loading...</span></p>
+<p>Live Time: <span id="globalLiveClock">Loading...</span></p>
+            </div>
+        </div>
+    </div>
+<script src="clock.js"></script>
+    <main class="container">
+
+        <section class="hero" id="home-intro">
+            <h1>Acoustic engineering meets <b style="color:var(--accent-secondary);">Live Performance</b></h1>
+            <p>Deploying next-generation matrix arrays, structural sonic alignment, and cryptographically verified live event ticketing models.</p>
+            <a href="portfolio.html" class="btn">Explore Dynamic Concert Events Hub</a>
+        </section>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number">450+</div>
+                <p>Acoustic Arrays Tuned</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">2.5M</div>
+                <p>Dynamic Safe Passes Authorized</p>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">100%</div>
+                <p>Redundant System Soundscapes</p>
+            </div>
+        </section>
+
+        <section class="media-section">
+            <h2 style="text-align: center; margin-bottom: 10px;">Interactive System Topology Mapping Matrix</h2>
+            <p style="text-align: center; color: var(--text-secondary); margin-bottom: 25px; font-size: 0.95rem;">
+                Click distinct geometric regions below to analyze verified dependencies across external operational hubs (<i>Wikipedia, Unsplash, Spotify</i>).
+            </p>
+            <div class="interactive-map-container">
+                <img src="https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=400&fit=crop"
+                usemap="#livemap" class="responsive-img" alt="System Live Event Arena Grid Interface Mapping Diagram">
+                <figcaption class="caption-text">Figure 1.1: LiveXperience Acoustic Zone Matrix Node Topology Grid Framework (<abbr title="User Interface Area Distribution Map">UI-ADM</abbr>)</figcaption>
+
+                <map name="livemap">
+                    <area shape="rect" coords="0,0,250,400" alt="Acoustic Wave Engineering Matrix Definition Wiki Portal Link" href="https://en.wikipedia.org/wiki/Acoustics" target="_blank">
+                    <area shape="circle" coords="400,200,100" alt="High Fidelity Spectacle Image Resource Hub Profile Target Link" href="https://unsplash.com/" target="_blank">
+                    <area shape="rect" coords="550,0,800,400" alt="External Audio Streaming Core Distribution Array Synchronization Node" href="https://www.spotify.com" target="_blank">
+                </map>
+            </div>
+        </section>
+
+        <section class="semantic-sampler">
+            <h3>System Layout Semantics &amp; Typographical Parameters</h3>
+            <p style="margin-top: 10px;">
+                welcome to our Event 2026!<abbr title="HyperText Markup Language 5"> Concert 2026</abbr> Lets enjoyy.
+                Please follow up for more upcoming <u>Artists</u>, <i>TheWeeknd</i>,
+                and <b>MOREEE!!!</b>.
+              This is the best Concert websites!! <sub>Come on</sub> Youre gonna excitedd<sup>2</sup>.
+            </p>
+            <h5>Visit our Websites</h5>
+            <pre>[INFO] LiveXperience Core initialization complete. All loops verified.
+                [NODE] Target localized loop sequence matched to primary index.
+                [TIME] Operational frequency sync timestamp metrics: 0.0003ms latency.</pre>
+            </section>
+
+            <section class="media-section" style="padding: 30px;">
+                <h3 style="margin-bottom: 20px; text-align: center;">Live Ambient Streaming Auditing Feeds</h3>
+                <div class="multimedia-row">
+                    <div class="multimedia-box">
+                        <h4>🎥 Low Latency CCTV Ambient Flow Video stream Overlay</h4>
+                        <video controls poster="https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=400&h=200&fit=crop">
+                            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                            Your client does not support modern native HTML5 embedded hardware accelerated playback matrices.
+                        </video>
+                    </div>
+                    <div class="multimedia-box">
+                        <h4>🎵 Timeless-TheWeeknd</h4>
+                        <audio controls>
+                            <source src="C:\Users\muhdi\Downloads\@TheWeeknd, Playboi Carti - Timeless (Lyrics).mp3" type="audio/mpeg">
+                            Your client does not support modern native HTML5 embedded audio processing interfaces.
+                        </audio>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer>
+            <div class="container">
+                <div class="footer-grid">
+                    <div>
+                        <h4>LiveXperience Core</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-secondary);">Optimized distribution portfolio suite compiled under comprehensive production architecture parameters for strict academic verification pipelines.</p>
+                    </div>
+                    <div>
+                        <h4>Internal Resource Targets</h4>
+                        <ul>
+                            <li><a href="about.html">Executive Board Index</a></li>
+                            <li><a href="service.html">Acoustic Core Deliverables</a></li>
+                            <li><a href="portfolio.html">Concert Inventory Matrix</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4>Operational Support Nodes</h4>
+                        <ul>
+                            <li><a href="contact.html">System Signal Transmissions</a></li>
+                            <li><a href="gallery.html">Visual Memory Matrix</a></li>
+                            <li><a href="#home-intro">Return to Top Pipeline</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="footer-bottom">
+                    &copy; 2026 LiveXperience Systems Core Group. Engineered for absolute responsive fidelity. Local execution clock pipelines live tracking.
+                </div>
+            </div>
+        </footer>
+
+        <datalist id="sitePages">
+            <option value="Home">
+            <option value="About Board">
+            <option value="Our Services">
+            <option value="Concert Hub">
+            <option value="Gallery Matrix">
+            <option value="System Core">
+        </datalist>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // =============================================================
+                // 1. DYNAMIC SYSTEM LIVE CLOCK PIPELINE LOGIC (EXISTING)
+                // =============================================================
+                function processClockTick() {
+                    const timestampTarget = document.getElementById('globalLiveClock');
+                    if (timestampTarget) {
+                        const calendarInstance = new Date();
+                        timestampTarget.textContent = calendarInstance.toLocaleTimeString();
+                    }
+                }
+                setInterval(processClockTick, 1000);
+                processClockTick();
+
+                // =============================================================
+                // 2. RESPONSIVE NAVIGATION MOBILE OVERLAY (EXISTING)
+                // =============================================================
+                const structuralHamburger = document.querySelector('.hamburger');
+                const mobileNavigationWrapper = document.querySelector('.nav-wrapper');
+                if (structuralHamburger && mobileNavigationWrapper) {
+                    structuralHamburger.addEventListener('click', function(clickEvent) {
+                        clickEvent.stopPropagation();
+                        mobileNavigationWrapper.classList.toggle('active');
+                    });
+                    document.addEventListener('click', function(outClickEvent) {
+                        if (!mobileNavigationWrapper.contains(outClickEvent.target) && !structuralHamburger.contains(
+                            outClickEvent.target)) {
+                            mobileNavigationWrapper.classList.remove('active');
+                        }
+                    });
+                }
+
+                // =============================================================
+                // 3. ARCHITECTURE PLATFORM MULTI-PAGE INDEX SEARCH (EXISTING)
+                // =============================================================
+                const centralizedRoutingMatrix = {
+                    'home': 'index.html',
+                    'about board': 'about.html',
+                    'about': 'about.html',
+                    'our services': 'service.html',
+                    'services': 'service.html',
+                    'concert hub': 'portfolio.html',
+                    'events': 'portfolio.html',
+                    'gallery matrix': 'gallery.html',
+                    'gallery': 'gallery.html',
+                    'system core': 'contact.html',
+                    'contact': 'contact.html'
+                };
+
+                function dispatchSearchRouting() {
+                    const userQueryString = document.getElementById('navSearchInput').value.trim().toLowerCase();
+                    if (userQueryString === '') {
+                        alert('⚠️ System Notification: Search query string parameters cannot be null.');
+                        return;
+                    }
+                    if (centralizedRoutingMatrix[userQueryString]) {
+                        window.location.href = centralizedRoutingMatrix[userQueryString];
+                    } else {
+                        alert('❌ Parameters Mapping Failure: No localized system sub-page matches index values for: "' +
+                            userQueryString + '". Please select from data mapping values.');
+                    }
+                }
+
+                document.getElementById('navSearchBtn').addEventListener('click', dispatchSearchRouting);
+                document.getElementById('navSearchInput').addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') dispatchSearchRouting();
+                });
+
+                // =============================================================
+                // 4. AUTH SYSTEM — LOGIN / SIGNUP (ADDED)
+                // =============================================================
+
+                // --- DOM refs ---
+                const authOverlay = document.getElementById('authOverlay');
+                const authToggleBtn = document.getElementById('authToggleBtn');
+                const authCloseBtn = document.getElementById('authCloseBtn');
+                const loginForm = document.getElementById('loginForm');
+                const signupForm = document.getElementById('signupForm');
+                const loginError = document.getElementById('loginError');
+                const signupError = document.getElementById('signupError');
+                const signupSuccess = document.getElementById('signupSuccess');
+                const switchToSignup = document.getElementById('switchToSignup');
+                const switchToLogin = document.getElementById('switchToLogin');
+                const forgotLink = document.getElementById('forgotLink');
+                const tabBtns = document.querySelectorAll('.auth-tabs button');
+
+                // --- State ---
+                let currentUser = null;
+
+                // --- Helpers ---
+                function getUsers() {
+                    try {
+                        return JSON.parse(localStorage.getItem('livex_users')) || [];
+                    } catch { return []; }
+                }
+
+                function saveUsers(users) {
+                    localStorage.setItem('livex_users', JSON.stringify(users));
+                }
+
+                function getSession() {
+                    try {
+                        return JSON.parse(localStorage.getItem('livex_session')) || null;
+                    } catch { return null; }
+                }
+
+                function saveSession(user) {
+                    localStorage.setItem('livex_session', JSON.stringify(user));
+                }
+
+                function clearSession() {
+                    localStorage.removeItem('livex_session');
+                }
+
+                function findUserByEmail(email) {
+                    return getUsers().find(u => u.email.toLowerCase() === email.toLowerCase());
+                }
+
+                // --- UI update: logged in state ---
+                function updateAuthUI() {
+                    const session = getSession();
+                    if (session) {
+                        currentUser = session;
+                        const name = session.name || session.email.split('@')[0];
+                        const initial = name.charAt(0).toUpperCase();
+                        authToggleBtn.innerHTML = `
+                        <span class="user-avatar">${initial}</span>
+                        <span class="user-name-display">${name}</span>
+                        <button class="logout-btn" id="logoutBtn">✕</button>
+                      `;
+                        authToggleBtn.classList.add('logged-in');
+                        // Attach logout
+                        const logoutBtn = document.getElementById('logoutBtn');
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener('click', function(e) {
+                                e.stopPropagation();
+                                clearSession();
+                                currentUser = null;
+                                updateAuthUI();
+                                // Close modal if open
+                                authOverlay.classList.remove('open');
+                            });
+                        }
+                    } else {
+                        currentUser = null;
+                        authToggleBtn.innerHTML = '🔐 Login';
+                        authToggleBtn.classList.remove('logged-in');
+                    }
+                }
+
+                // --- Show/hide modal ---
+                function openAuthModal() {
+                    authOverlay.classList.add('open');
+                    // Reset forms
+                    loginForm.reset();
+                    signupForm.reset();
+                    loginError.classList.remove('show');
+                    signupError.classList.remove('show');
+                    signupSuccess.classList.remove('show');
+                    // Default to login tab
+                    setActiveTab('login');
+                    // Clear any previous error states
+                }
+
+                function closeAuthModal() {
+                    authOverlay.classList.remove('open');
+                }
+
+                // --- Tab switching ---
+                function setActiveTab(tab) {
+                    tabBtns.forEach(btn => {
+                        btn.classList.toggle('active', btn.dataset.tab === tab);
+                    });
+                    document.getElementById('loginForm').classList.toggle('active', tab === 'login');
+                    document.getElementById('signupForm').classList.toggle('active', tab === 'signup');
+                    // Clear messages
+                    loginError.classList.remove('show');
+                    signupError.classList.remove('show');
+                    signupSuccess.classList.remove('show');
+                }
+
+                // --- Login logic ---
+                function handleLogin(e) {
+                    e.preventDefault();
+                    const email = document.getElementById('loginEmail').value.trim();
+                    const password = document.getElementById('loginPassword').value.trim();
+                    const remember = document.getElementById('rememberMe').checked;
+
+                    loginError.classList.remove('show');
+
+                    if (!email || !password) {
+                        loginError.textContent = '⚠️ Please fill in all fields.';
+                        loginError.classList.add('show');
+                        return;
+                    }
+
+                    const users = getUsers();
+                    const user = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+
+                    if (!user) {
+                        loginError.textContent = '❌ No account found with this email.';
+                        loginError.classList.add('show');
+                        return;
+                    }
+
+                    if (user.password !== password) {
+                        loginError.textContent = '❌ Incorrect password. Please try again.';
+                        loginError.classList.add('show');
+                        return;
+                    }
+
+                    // Success
+                    const sessionData = {
+                        email: user.email,
+                        name: user.name || user.email.split('@')[0],
+                    };
+                    saveSession(sessionData);
+                    currentUser = sessionData;
+                    updateAuthUI();
+                    closeAuthModal();
+                    // Optional: show a brief success toast
+                }
+
+                // --- Signup logic ---
+                function handleSignup(e) {
+                    e.preventDefault();
+                    const name = document.getElementById('signupName').value.trim();
+                    const email = document.getElementById('signupEmail').value.trim();
+                    const password = document.getElementById('signupPassword').value;
+                    const confirm = document.getElementById('signupConfirm').value;
+
+                    signupError.classList.remove('show');
+                    signupSuccess.classList.remove('show');
+
+                    if (!name || !email || !password || !confirm) {
+                        signupError.textContent = '⚠️ Please fill in all fields.';
+                        signupError.classList.add('show');
+                        return;
+                    }
+
+                    if (password.length < 6) {
+                        signupError.textContent = '⚠️ Password must be at least 6 characters.';
+                        signupError.classList.add('show');
+                        return;
+                    }
+
+                    if (password !== confirm) {
+                        signupError.textContent = '⚠️ Passwords do not match.';
+                        signupError.classList.add('show');
+                        return;
+                    }
+
+                    const users = getUsers();
+                    if (users.some(u => u.email.toLowerCase() === email.toLowerCase())) {
+                        signupError.textContent = '❌ An account with this email already exists.';
+                        signupError.classList.add('show');
+                        return;
+                    }
+
+                    // Create user
+                    const newUser = { name, email, password };
+                    users.push(newUser);
+                    saveUsers(users);
+
+                    // Show success
+                    signupSuccess.textContent = '✅ Account created successfully! You can now log in.';
+                    signupSuccess.classList.add('show');
+
+                    // Reset form
+                    signupForm.reset();
+
+                    // Auto-switch to login after a moment
+                    setTimeout(() => {
+                        setActiveTab('login');
+                        // Pre-fill email
+                        document.getElementById('loginEmail').value = email;
+                        document.getElementById('loginPassword').focus();
+                        signupSuccess.classList.remove('show');
+                    }, 1800);
+                }
+
+                // --- Event listeners ---
+
+                // Toggle modal open
+                authToggleBtn.addEventListener('click', function(e) {
+                    // If logged in, the click on avatar/logout is handled inside
+                    if (this.classList.contains('logged-in')) {
+                        // The logout button inside handles its own click
+                        return;
+                    }
+                    openAuthModal();
+                });
+
+                // Close modal
+                authCloseBtn.addEventListener('click', closeAuthModal);
+                authOverlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeAuthModal();
+                });
+
+                // Tab switching
+                tabBtns.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        setActiveTab(this.dataset.tab);
+                    });
+                });
+
+                // Switch to signup from login
+                switchToSignup.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setActiveTab('signup');
+                });
+
+                // Switch to login from signup
+                switchToLogin.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    setActiveTab('login');
+                });
+
+                // Forgot password placeholder
+                forgotLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('🔐 Password reset functionality is coming soon. Please contact support@livexperience.io');
+                });
+
+                // Form submissions
+                loginForm.addEventListener('submit', handleLogin);
+                signupForm.addEventListener('submit', handleSignup);
+
+                // Keyboard: Escape to close modal
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape' && authOverlay.classList.contains('open')) {
+                        closeAuthModal();
+                    }
+                });
+
+                // Initialize UI
+                updateAuthUI();
+
+                // If the user clicks on the auth button while logged in, we want to
+                // allow logout via the logout button inside it — already handled.
+
+                // Also ensure that clicking the auth button when logged in (but outside the logout btn)
+                // does nothing special — the logout btn handles it.
+                // We already guard against this in the click handler above.
+
+                console.log('🔐 LiveXperience Auth System initialized.');
+            });
+        </script>
+    </body>
+    </html>
